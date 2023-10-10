@@ -187,6 +187,8 @@ void preOrdem(No* raiz){
     }
 }
 
+//AVL
+
 int maior(int a, int b){
     if(a > b){
         return a;
@@ -211,55 +213,54 @@ int fatorDeBalanceamento(No* no){
     }  
 }
 
-No* ll(No* raiz){
-    No* subArvore = raiz->direito;
-    No* filho = subArvore->esquerdo;
+No* rr(No* raiz){
+    No* new = raiz->direito;
+    No* filho = new->esquerdo;
 
-    subArvore->esquerdo = raiz;
+    new->esquerdo = raiz;
     raiz->direito = filho;
 
     raiz->altura = maior(alturaDoNo(raiz->esquerdo), alturaDoNo(raiz->direito)) + 1;
-    subArvore->altura = maior(alturaDoNo(subArvore->esquerdo), alturaDoNo(subArvore->direito)) + 1;
+    new->altura = maior(alturaDoNo (new->esquerdo), alturaDoNo (new->direito)) + 1;
     
-    return subArvore;
+    return new;
  }
 
- No* rr(No* raiz){
-    No* subArvore = raiz->esquerdo;
-    No* filho = subArvore->direito;
+No* ll(No* raiz){
+    No* new = raiz->esquerdo;
+    No* filho = new->direito;
 
-    subArvore->direito = raiz;
+    new->direito = raiz;
     raiz->esquerdo = filho;
 
     raiz->altura = maior(alturaDoNo(raiz->esquerdo), alturaDoNo(raiz->direito)) + 1;
-    subArvore->altura = maior(alturaDoNo(subArvore->esquerdo), alturaDoNo(subArvore->direito)) + 1;
+    new->altura = maior(alturaDoNo (new->esquerdo), alturaDoNo (new->direito)) + 1;
     
-    return subArvore;
+    return new;
  }
 
 No* lr(No* raiz){
-    raiz->esquerdo = ll(raiz->esquerdo);
-    return rr(raiz);
+    raiz->esquerdo = rr(raiz->esquerdo);
+    return ll(raiz);
 }
  
  
 No* rl(No* raiz){
-    raiz->direito = rr(raiz->direito);
-    return ll(raiz);
+    raiz->direito = ll(raiz->direito);
+    return rr(raiz);
 }
 
 No* balancear(No* raiz){
     int fator = fatorDeBalanceamento(raiz);
 
     if (fator < -1 && fatorDeBalanceamento(raiz->direito) <= 0){
-       raiz = ll(raiz);
+       raiz = rr(raiz);
     }else if (fator > 1 && fatorDeBalanceamento(raiz->esquerdo) >= 0){
-        raiz = rr(raiz);
+        raiz = ll(raiz);
     }else if (fator > 1 && fatorDeBalanceamento(raiz->esquerdo) < 0){
         raiz = lr(raiz);
     }else if (fator < -1 && fatorDeBalanceamento(raiz->direito) > 0){
         raiz = rl(raiz);
-
     }
     
     return raiz;
