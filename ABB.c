@@ -281,6 +281,7 @@ int main(){
     insereNaABB(abb, 13);
     insereNaABB(abb, 20);
     insereNaABB(abb, 15);
+    removeElementoABB(abb->raiz, 20);
 
     preOrdem(abb->raiz);
     printf("\n");
